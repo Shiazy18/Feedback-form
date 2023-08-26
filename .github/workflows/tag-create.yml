@@ -1,0 +1,34 @@
+name: UAT Tagging
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'UAT Version'
+        required: true
+
+jobs:
+  tag_uat_releases:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        ref: tag-create 
+
+    - name: Set up Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+
+    - name: Create UAT Tags
+      run: |
+        regions=("kent" "uk" "ie")
+        version=${{ github.event.inputs.version }}
+
+        for region in "${regions[@]}"; do
+          tag_name="GENX_UAT_${{ region }}_${{ github.run_number }}_${{ version }}"
+          git tag $tag_name
+          git push origin $tag_name
+        done
