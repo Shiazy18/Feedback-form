@@ -28,7 +28,7 @@ jobs:
         version=${{ github.event.inputs.version }}
 
         for region in "${regions[@]}"; do
-          tag_name="GENX_UAT_${{ region }}_${{ github.run_number }}_${{ version }}"
+          tag_name="GENX_UAT_${{ regions }}_${{ github.run_number }}_${{ version }}"
           git tag $tag_name
           git push origin $tag_name
         done
