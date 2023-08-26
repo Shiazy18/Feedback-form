@@ -13,9 +13,9 @@ jobs:
 
     steps:
     - name: Check out code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
       with:
-        ref: main # Change to the branch where you want to run the workflow
+        ref: your-target-branch # Change to the branch where you want to run the workflow
 
     - name: Set up Git
       run: |
@@ -24,11 +24,11 @@ jobs:
 
     - name: Create UAT Tags
       run: |
-        regions=("SP49" "uk" "ie")
+        regions=("uk" "kent" "ie")
         version=${{ github.event.inputs.version }}
-
-        for region in $regions; do
-          tag_name="GENX_UAT_${region}_$(date +'%d%b%y')/v${version}"
+        # GENX_UAT_SP49_26Aug23/uk1.23
+        for region in "${regions[@]}"; do
+          tag_name="GENX_UAT_SP49_$(date +'%d%b%y')/${region}${version}"
           git tag $tag_name
           git push origin $tag_name
         done
