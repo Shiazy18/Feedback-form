@@ -1,0 +1,34 @@
+name: Generate Artifact
+
+on:
+  push:
+    branches:
+      - main  # Change this to your default branch if different
+
+jobs:
+  generate-artifact:
+    runs-on: ubuntu-latest
+   
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Angular app
+        run: npm run build --prod
+
+      - name: Generate Artifact
+        id: generate-artifact
+        run: |
+          artifact_name="your-artifact-name-$(date +'%Y-%m-%d-%H-%M-%S')"
+          echo "Artifact name: $artifact_name"
+          echo "::set-output name=artifact_name::$artifact_name"
+
+    
