@@ -22,18 +22,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action":
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-      with:
-        ref: main # Change to the branch where you want to run the workflow
-
-    - name: Set up Git
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
 
     - name: Create UAT Tags
       run: |
@@ -47,7 +35,7 @@ jobs:
         done
 
   releases:
-    needs: tag_uat_releases:
+    needs: tag_uat_releases
     runs-on: ubuntu-latest
 
     steps:
