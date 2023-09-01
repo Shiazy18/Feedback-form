@@ -30,7 +30,8 @@ jobs:
         for region in "${regions[@]}"; do
           tag_name="GENX_UAT_SP49_$(date +'%d%b%y')/${region}${version}"
           git tag $tag_name
-          git-release {tag_name}
+          git-release tag_name
+          git-release {tag_name} -m "GENX_UAT_SP49_$(date +'%d%b%y')/${region}${version}"
           git push origin $tag_name
         done
 
