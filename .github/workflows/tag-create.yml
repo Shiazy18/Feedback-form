@@ -8,7 +8,20 @@ on:
         required: true
 
 jobs:
+  tag_uat_releasesjobs:
   tag_uat_releases:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        ref: main # Change to the branch where you want to run the workflow
+
+    - name: Set up Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action":
     runs-on: ubuntu-latest
 
     steps:
@@ -32,3 +45,43 @@ jobs:
           git tag $tag_name
           git push origin $tag_name
         done
+
+  releases:
+    needs: tag_uat_releases:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        ref: main # Change to the branch where you want to run the workflow
+
+    - name: Set up Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action" 
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        ref: main # Change to the branch where you want to run the workflow
+
+    - name: Set up Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"        
+    - name: Create UAT releases
+      run: |
+        regions=("uk" "kent" "ie")
+        version=${{ github.event.inputs.version }}
+        # GENX_UAT_SP49_26Aug23/uk1.23
+        for region in "${regions[@]}"; do
+          tag_releases="GENX_UAT_SP49_$(date +'%d%b%y')/${region}${version}"
+          git-release [<tag_name>]
+          git push origin $tag_name
+        done
+
+      
+        
