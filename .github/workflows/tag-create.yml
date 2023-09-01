@@ -8,7 +8,6 @@ on:
         required: true
 
 jobs:
-  tag_uat_releasesjobs:
   tag_uat_releases:
     runs-on: ubuntu-latest
 
