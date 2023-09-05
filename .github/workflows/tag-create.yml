@@ -15,34 +15,20 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
       with:
-        ref: stage/1.0 # Change to the branch where you want to run the workflow
+        ref: stage/1.0
 
     - name: Set up Git
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
 
-    - name: Get Previous Release Tag
-      id: prev_tag
-      run: |
-        prev_tag=$(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)
-        echo "::set-output name=tag::$prev_tag"
-
-    - name: Get Previous Release Description
-      id: prev_description
-      run: |
-        prev_tag=${{ steps.prev_tag.outputs.tag }}
-        prev_description=$(git tag -l -n99 $prev_tag)
-        echo "::set-output name=description::$prev_description"
-
     - name: Create UAT Tags
       run: |
         regions=("uk" "kent" "ie")
         version=${{ github.event.inputs.version }}
-        prev_description=${{ steps.prev_description.outputs.description }}
 
         for region in "${regions[@]}"; do
           tag_name="GENX_UAT_SP49_$(date +'%d%b%y')/${region}${version}"
-          git tag -a $tag_name -m "$tag_name - $prev_description"
+          git tag $tag_name
           git push origin $tag_name
         done
