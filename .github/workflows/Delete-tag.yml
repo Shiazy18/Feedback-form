@@ -14,10 +14,10 @@ jobs:
 
     - name: show list of tags
       run: |
-        pwd
-        ls -lrth
-        git tag -l "uk1.*" 
+         pwd
+         ls -lrth
+         git tag -l "uk1.*" 
    
     - name: delete
       run: |
-       git tag | xargs git tag -d $(git tag -l "uk1.*")
+         git tag | xargs git tag -d $(git tag -l "uk1.*")
