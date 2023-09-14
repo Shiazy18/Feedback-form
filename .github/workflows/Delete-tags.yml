@@ -12,4 +12,4 @@ jobs:
    
     - name: deletion
       run: |
-       git tag -d $(git tag -l "uk0.*")
+       git tag -d $(git tag -l "uk1.*")
