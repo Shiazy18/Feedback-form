@@ -9,7 +9,11 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout/@v3
+
+    - name: show list of tags
+      run: |
+        git tag -l "uk1.*" 
    
     - name: deletion
       run: |
-       git tag -d $(git tag -l "uk0.*")
+       git tag -d $(git tag -l "uk1.*")
