@@ -6,6 +6,8 @@ on:
 jobs:
   deletion-of-tags:
     runs-on: ubuntu-latest
+    name: releases
+    
     steps:
     - name: checkout
       uses: actions/checkout/@v3
@@ -16,4 +18,4 @@ jobs:
    
     - name: deletion
       run: |
-       git tag -d $(git tag -l "uk1.*")
+       git tag | xargs git tag -d $("uk1.*)
