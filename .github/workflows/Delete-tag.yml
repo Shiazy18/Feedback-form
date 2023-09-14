@@ -1,0 +1,16 @@
+name: Deletion of release versions
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  deletion-of-tags:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout/@V4
+   
+    - name: deletion
+      run: |
+       git tag -d $GENX_UAT_*/uk*.*
+
