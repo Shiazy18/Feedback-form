@@ -1,0 +1,23 @@
+name: Deletion of release versions
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  deletion-of-tags:
+    runs-on: ubuntu-latest
+    name: releases
+    
+    steps:
+    - name: checkout
+      uses: actions/checkout/@v3
+
+    - name: show list of tags
+      run: |
+         pwd
+         ls -lrth
+         git tag -l "uk1.*" 
+   
+    - name: delete
+      run: |
+         git tag | xargs git tag -d $(git tag -l "uk1.*")
