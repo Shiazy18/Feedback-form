@@ -16,10 +16,10 @@ jobs:
       run: |
          pwd
          ls -lrth
-         git tag -l "uk1.*" 
+         
    
     - name: delete
       run: |
-         git tag -d {GENX_UAT_SP49_***/uk1.*}
-         git push origin :{GENX_UAT_SP49_***/uk1.*}
+         git tag -d {GENX_UAT_SP49_*******/uk1.*}
+         git push origin :{GENX_UAT_SP49_*******/uk1.*}
          
