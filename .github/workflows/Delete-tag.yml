@@ -12,5 +12,5 @@ jobs:
    
     - name: deletion
       run: |
-       git tag -d $GENX_UAT_*/uk*.*
+       git tag -d $GENX_UAT_*/uk*
 
