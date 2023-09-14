@@ -15,5 +15,5 @@ jobs:
    
     - name: delete
       run: |
-         git tags -delete $(GENX_UAT_SP48_*/uk1.*)
+         git tag -delete $(GENX_UAT_SP48_*/uk1.*)
          
