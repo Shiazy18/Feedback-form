@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: checkout
-      uses: actions/checkout/@V4
+      uses: actions/checkout/@v3
    
     - name: deletion
       run: |
