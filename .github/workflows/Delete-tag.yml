@@ -14,8 +14,10 @@ jobs:
 
     - name: show list of tags
       run: |
+        pwd
+        ls -lrth
         git tag -l "uk1.*" 
    
-    - name: deletion
+    - name: delete
       run: |
-       git tag | xargs git tag -d $("GENX_UAT_SP49_*/uk*")
+       git tag | xargs git tag -d $(git tag -l "uk1.*")
