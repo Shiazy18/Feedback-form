@@ -18,4 +18,4 @@ jobs:
    
     - name: deletion
       run: |
-       git tag | xargs git tag -d $("uk1.*)
+       git tag | xargs git tag -d $("uk1.*")
