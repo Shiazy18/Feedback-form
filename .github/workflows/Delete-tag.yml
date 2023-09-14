@@ -20,4 +20,6 @@ jobs:
    
     - name: delete
       run: |
-         git tag | xargs git tag -d $(git tag -l "uk1.*")
+         git tag -d {GENX_UAT_SP49_***/uk1.*}
+         git push origin :{GENX_UAT_SP49_***/uk1.*}
+         
