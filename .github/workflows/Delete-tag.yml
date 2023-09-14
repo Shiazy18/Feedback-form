@@ -15,6 +15,6 @@ jobs:
    
     - name: delete
       run: |
-         git tag -d <={GENX_UAT_SP49_05Sep23/uk1.6}
+         git tag -d {GENX_UAT_SP49_05Sep23/uk1.6}
          git push origin :{GENX_UAT_SP49_05Sep23/uk1.6}
          
