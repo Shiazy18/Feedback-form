@@ -1,4 +1,4 @@
-﻿$patToken = "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"
+﻿$patToken = "removed-pat-token"
 $username = "Shiazy18"
 $repository = "Feedback-form"
 
