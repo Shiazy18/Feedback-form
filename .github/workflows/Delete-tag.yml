@@ -19,6 +19,5 @@ jobs:
     - name: delete
       run: |
           gh release delete GENX_UAT_SP49_05Sep23/uk1.4
-          --cleanup-tag
-          -y
+         
           
