@@ -1,0 +1,39 @@
+name: Delete Old Branches
+
+on:
+  workflow_dispatch
+
+jobs:
+  delete_old_branches:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download PowerShell script
+        run: |
+          
+          curl -o delete-branch.ps1 https://github.com/Shiazy18/Feedback-form/blob/delete-branch/delete-branch.ps1
+        env:
+          SCRIPT_REPO_URL: https://github.com/Shiazy18/Feedback-form/blob/delete-branch/
+
+      - name: Setup PowerShell
+        uses: actions/setup-powershell@v2
+        with:
+          pwsh-version: '7.x'
+
+      - name: Run PowerShell script
+        run: |
+          
+          .\delete-branch.ps1
+        env:
+          PAT_TOKEN: "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"
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Delete old branches"
+          git push
