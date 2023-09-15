@@ -3,6 +3,9 @@ on:
   push:
   workflow_dispatch:
 
+env:
+    GH_TOKEN: ${{ github.token }}  
+
 jobs:
   deletion-of-tags:
     runs-on: ubuntu-latest
@@ -15,5 +18,7 @@ jobs:
    
     - name: delete
       run: |
-         Run git tag --delete GENX_UAT_SP49_05Sep23/uk1.6
-         
+          gh release delete GENX_UAT_SP49_05Sep23/uk1.6
+          --cleanup-tag
+          -y
+          
