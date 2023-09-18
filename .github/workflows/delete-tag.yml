@@ -2,7 +2,6 @@ name: Delete Old Tags
 
 on:
   workflow_dispatch:
-
 jobs:
   delete_old_tags:
     runs-on: ubuntu-latest
@@ -21,4 +20,5 @@ jobs:
       - name: Delete old tags
         if: steps.list_tags.outputs.stdout != ''
         run: |
+          cat old_tags.txt | xargs -I {} git tag -d {}
           cat old_tags.txt | xargs -I {} git push --delete origin {}
