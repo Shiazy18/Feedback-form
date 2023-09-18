@@ -1,0 +1,39 @@
+name: Delete Old Tags and Releases
+
+on:
+  workflow_dispatch:
+
+jobs:
+  delete_old_tags_and_releases:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Delete old tags and releases
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          #!/bin/bash
+          set -e
+
+          # Replace 'your_username' and 'your_repository' with your GitHub username and repository name
+          OWNER="your_username"
+          REPO="your_repository"
+
+          # Delete old tags
+          for tag in $(git ls-remote --tags --refs "https://github.com/$OWNER/$REPO.git" | cut -d"/" -f3-); do
+            # Customize the condition to keep specific tags and delete the rest
+            if [[ "$tag" != "keep_this_tag" ]]; then
+              git push --delete origin "$tag"
+            fi
+          done
+
+          # Delete old releases
+          for release_id in $(curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases" | jq -r '.[].id'); do
+            # Customize the condition to keep specific releases and delete the rest
+            if [[ "$release_id" != "12345678" ]]; then
+              curl -X DELETE -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/$release_id"
+            fi
+          done
