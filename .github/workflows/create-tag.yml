@@ -1,0 +1,42 @@
+name: UAT Tagging and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'UAT Version'
+        required: true
+
+jobs:
+  tag_uat_releases:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        ref: main
+
+    - name: Set up Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+
+    - name: Create UAT Tags and Release
+      run: |
+        regions=("IE" "UK" "Kent")
+        version=${{ github.event.inputs.version }}
+
+        for region in "${regions[@]}"; do
+          tag_name="GENX_UAT_SP49_$(date +'%d%b%y')/${region}${version}"
+          git tag -a $tag_name -m "$tag_name"
+          git push origin $tag_name
+        done
+
+        # Create a GitHub release
+        release_name="UAT Release for $(date +'%d%b%y')"
+        release_body="This is the UAT release for version ${version}."
+
+        curl -X POST "https://api.github.com/repos/${{ github.repository }}/releases" \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -d "{\"tag_name\":\"$tag_name\",\"name\":\"$release_name\",\"body\":\"$release_body\"}"
