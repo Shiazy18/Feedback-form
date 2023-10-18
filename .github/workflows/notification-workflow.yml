@@ -2,7 +2,7 @@ name: Send GitHub Actions Notifications to Microsoft Teams
 
 on:
   workflow_run:
-    workflows: UAT Tagging and Release  
+    workflows: UAT Tagging and Release
     types:
       - completed
       - workflow_run
@@ -38,11 +38,11 @@ jobs:
           curl -X POST -H 'Content-Type: application/json' -d "$PAYLOAD" $TEAMS_WEBHOOK_URL
         env:
           TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}  
-
       - name: Send Notification to Microsoft Teams on Release Creation
         if: github.event_name == 'release'
         run: |
-          MESSAGE="A release was created on branch \`${{ github.event.release.target_commitish }}\`."
+          MESSAGE="A new release was created on branch \`${{ github.event.release.target_commitish }}\` with the tag \`${{ github.event.release.tag_name }}\`."
+          MESSAGE+="\nRelease Notes: ${{ github.event.release.body }}"
           PAYLOAD="{\"text\":\"$MESSAGE\"}"
           curl -X POST -H 'Content-Type: application/json' -d "$PAYLOAD" $TEAMS_WEBHOOK_URL
         env:
