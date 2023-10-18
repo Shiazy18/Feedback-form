@@ -1,0 +1,34 @@
+name: Send GitHub Actions Notifications to Microsoft Teams
+
+on:
+  workflow_run:
+    workflows: UAT Tagging and Release
+    types:
+      - completed
+      - workflow_run
+
+jobs:
+  send_notification:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Send Notification to Microsoft Teams on Workflow Trigger
+        if: github.event_name == 'workflow_run'
+        run: |
+          MESSAGE="Workflow \`${{ github.event.workflow }}\` was triggered by \`$GITHUB_ACTOR\`."
+          PAYLOAD="{\"text\":\"$MESSAGE\"}"
+          curl -X POST -H 'Content-Type: application/json' -d "$PAYLOAD" $TEAMS_WEBHOOK_URL
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}  
+
+      - name: Send Notification to Microsoft Teams on Workflow Completion
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion != 'neutral'
+        run: |
+          MESSAGE="Workflow \`${{ github.event.workflow }}\` has completed with status: \`${{ github.event.workflow_run.conclusion }}\`."
+          PAYLOAD="{\"text\":\"$MESSAGE\"}"
+          curl -X POST -H 'Content-Type: application/json' -d "$PAYLOAD" $TEAMS_WEBHOOK_URL
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }} 
