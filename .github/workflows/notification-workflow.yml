@@ -6,6 +6,12 @@ on:
     types:
       - completed
       - workflow_run
+  release:
+    types:
+      - created
+  push:
+    branches:
+      - main
 
 jobs:
   send_notification:
@@ -18,7 +24,7 @@ jobs:
       - name: Send Notification to Microsoft Teams on Workflow Trigger
         if: github.event_name == 'workflow_run'
         run: |
-          MESSAGE="Workflow \`${{ github.event.workflow }}\` was triggered by \`$GITHUB_ACTOR\`."
+          MESSAGE="Workflow \`${{ github.event.workflow }}\` was triggered."
           PAYLOAD="{\"text\":\"$MESSAGE\"}"
           curl -X POST -H 'Content-Type: application/json' -d "$PAYLOAD" $TEAMS_WEBHOOK_URL
         env:
@@ -31,4 +37,13 @@ jobs:
           PAYLOAD="{\"text\":\"$MESSAGE\"}"
           curl -X POST -H 'Content-Type: application/json' -d "$PAYLOAD" $TEAMS_WEBHOOK_URL
         env:
-          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }} 
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}  
+      - name: Send Notification to Microsoft Teams on Release Creation
+        if: github.event_name == 'release'
+        run: |
+          MESSAGE="A new release was created on branch \`${{ github.event.release.target_commitish }}\` with the tag \`${{ github.event.release.tag_name }}\`."
+          MESSAGE+="\nRelease Notes: ${{ github.event.release.body }}"
+          PAYLOAD="{\"text\":\"$MESSAGE\"}"
+          curl -X POST -H 'Content-Type: application/json' -d "$PAYLOAD" $TEAMS_WEBHOOK_URL
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}  
